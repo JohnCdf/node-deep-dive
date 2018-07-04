@@ -1,4 +1,4 @@
-const cluster = require('cluster');
+const Worker = require('webworker-threads').Worker;
 
 process.env.UV_THREADPOOL_SIZE = 2; // see thread.js
 
@@ -6,9 +6,20 @@ const crypto = require('crypto');
 const express = require('express');
 const app = express();
 app.get('/', (req, res) => {
-  crypto.pbkdf2('a', 'b', 10000, 512, 'sha512', (err, hashed) => {
-    res.send('hey there!')
+  const worker = new Worker(function(){
+    this.onmessage = function() {
+      let i = 0;
+      while (i < 1e9) {
+        i++
+      }
+      postMessage(i)
+    }
   });
+
+  worker.onmessage = function (i) {
+    console.log(i)
+  }
+  worker.postMessage()
 });
 app.get('/fast', (req, res) => {
   res.send('Fiumm')
