@@ -1,3 +1,5 @@
+// This is pseudo code that replicates the node.js event loop
+
 const pendingTimers = [];
 const pendingOSTasks = []; // See async.js
 const pendingOperations = []; // See threads.js
