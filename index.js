@@ -6,21 +6,8 @@ const crypto = require('crypto');
 const express = require('express');
 const app = express();
 app.get('/', (req, res) => {
-  const worker = new Worker(function(){
-    this.onmessage = function() {
-      let i = 0;
-      while (i < 1e9) {
-        i++
-      }
-      postMessage(i)
-    }
-  });
-
-  worker.onmessage = function (i) {
-    console.log(i)
-  }
-  worker.postMessage()
-});
+  res.send('Hey')
+})
 app.get('/fast', (req, res) => {
   res.send('Fiumm')
 })
